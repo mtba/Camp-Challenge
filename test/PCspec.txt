@@ -1,0 +1,5 @@
+OS: Windows8.1  64ビットオペレーティングシステム
+CPU: AMD E1-6010 APU with AMD Radeon R2 Graphics  コア数2  1.35 GHz
+実装メモリ: 6.00 GB (4.93 GB 使用可能)
+ハードディスク: Cドライブの容量186GB 使用領域61.7GB 空き領域124GB
+                Dドライブの容量258GB 使用領域6.33GB 空き領域252GB
