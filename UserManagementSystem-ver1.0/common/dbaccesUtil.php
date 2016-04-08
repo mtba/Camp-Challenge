@@ -1,10 +1,12 @@
 <?php
+require_once '../common/defineUtil.php';
 
 //DBへの接続を行う。成功ならPDOオブジェクトを生成
 //失敗なら中断し、メッセージの表示を行う
 function connect2MySQL(){
     try{
-        $pdo = new PDO('mysql:host=localhost;dbname=Challenge_db;charset=utf8','root',''); //ユーザとパスを変更
+        $pdo = new PDO( DB_TYPE.':host='.DB_HOST.';dbname='.DB_DBNAME.
+            ';charset=utf8',DB_USER,DB_PWD ); //ユーザとパスを変更
         //課題７ エラーモードをEXCEPTIONに設定
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //エミュレートをオフ

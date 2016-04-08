@@ -38,6 +38,7 @@ class Operate_DB{
                 $stmt->bindValue($key, $val);
             }
             $stmt->execute();
+            return $stmt->rowCount();
         } catch (Exception $err) {
             echo $err->getMessage();
             exit;

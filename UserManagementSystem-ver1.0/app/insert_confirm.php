@@ -33,6 +33,7 @@
         $_SESSION['type']     = $post_type;
         $_SESSION['tell']     = $post_tell;
         $_SESSION['comment']  = $post_comment;
+
         ?>
 
         <h1>登録確認画面</h1>
@@ -57,8 +58,8 @@
         <p>上記の内容で登録します。よろしいですか？</p>
 
         <form action ="<?=INSERT_RESULT?>" method ="POST">
-            <input type ="hidden" name ="route" value ="from_confirm">  <!-- 課題５ hiddenフォーム追加 -->
-            <input type ="submit" name ="yes" value ="はい">
+            <input type ="hidden" name ="route" value ="from_confirm"> <!-- 課題５ hiddenフォーム追加 -->
+            <input type ="submit" name ="yes"   value ="はい">
         </form>
 
         <form action ="<?=INSERT?>" method ="POST">

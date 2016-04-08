@@ -19,8 +19,22 @@
         $comment  = $_SESSION['comment'];
 
         //DBに全項目のある1レコードを登録するSQL
-        $insert_sql = "INSERT INTO user_t(name,birthday,tell,type,comment,newDate)"
+        $insert_sql = "INSERT INTO ".DB_TBL_USER."(name,birthday,tell,type,comment,newDate)"
         ."VALUES(:name,:birthday,:tell,:type,:comment,:newDate)";
+
+        //種別を数値化
+        switch ($type) {
+            case 'エンジニア':
+                $type_to_number = 1;
+                break;
+
+            case '営業':
+                $type_to_number = 2;
+                break;
+
+            case 'その他':
+                $type_to_number = 3;
+        }
 
         //課題８ バインド用の連想配列を作成する
         //Key名にプレースホルダ、バリューに入れる値を設定する
@@ -28,7 +42,7 @@
             ':name'     => $name,
             ':birthday' => $birthday,
             ':tell'     => $tell,
-            ':type'     => $type,
+            ':type'     => $type_to_number,
             ':comment'  => $comment,
             ':newDate'  => date('y-m-d H-i-s') //課題６ dateで日付文字列に変更
         );

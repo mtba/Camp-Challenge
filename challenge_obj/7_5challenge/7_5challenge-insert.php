@@ -30,7 +30,7 @@
                 ':number' => $number,
                 ':date' => $date
             );
-            $db->pdo_insert($sql,$reg_param);
+            $addedrecord = $db->pdo_insert($sql,$reg_param);
             $db = null;
         } else {
             $errflg = true;
