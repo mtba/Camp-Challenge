@@ -1,5 +1,4 @@
 <?php require_once '../common/defineUtil.php'; ?>
-<?php require_once '../common/scriptUtil.php'; ?>   <!-- 課題１ 関数を使うために追加 -->
 
 <!DOCTYPE html>
 <html lang="ja">
