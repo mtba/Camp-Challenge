@@ -1,11 +1,12 @@
 <?php require_once '../common/defineUtil.php'; ?>
 <?php require_once '../common/scriptUtil.php'; ?>   <!-- 課題１ 関数を使うために追加 -->
+
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
-<meta charset="UTF-8">
-      <title>登録確認画面</title>
+    <meta charset="UTF-8">
+    <title>登録確認画面</title>
 </head>
   <body>
     <?php
@@ -22,8 +23,13 @@
         $post_tell     = $_POST['tell'];
         $post_comment  = $_POST['comment'];
 
-        //セッション情報に格納
         session_start();
+            // ↓フォーム再送信を封じるが、キャッシュが使われる
+            // header('Expires:-1');
+            // header('Cache-Control:');
+            // header('Pragma:');
+
+        //セッション情報に格納
         $_SESSION['name']     = $post_name;
         //課題４ 年月日の情報もセッションに格納
         $_SESSION['year']     = $_POST['year'];
@@ -34,38 +40,53 @@
         $_SESSION['tell']     = $post_tell;
         $_SESSION['comment']  = $post_comment;
 
-        ?>
+        if( checkdate($_POST['month'], $_POST['day'], $_POST['year']) ){  //日付存在判定
 
-        <h1>登録確認画面</h1>
+            $random = mt_rand();    //乱数格納(毎回違うデータを入れたい)
+            $_SESSION['random']  = $random; //次のページでの比較用にセッションに保存しておく
 
-        <table>
-            <tr>
-                <th>名前:</th><td><?=$post_name?></td>
-            </tr>
-            <tr>
-                <th>生年月日:</th><td><?=$post_birthday?></td>
-            </tr>
-            <tr>
-                <th>種別:</th><td><?=$post_type?></td>
-            </tr>
-            <tr>
-                <th>電話番号:</th><td><?=$post_tell?></td>
-            </tr>
-            <tr>
-                <th>自己紹介:</th><td><?=$post_comment?></td>
-            </tr>
-        </table>
-        <p>上記の内容で登録します。よろしいですか？</p>
+            ?>
 
-        <form action ="<?=INSERT_RESULT?>" method ="POST">
-            <input type ="hidden" name ="route" value ="from_confirm"> <!-- 課題５ hiddenフォーム追加 -->
-            <input type ="submit" name ="yes"   value ="はい">
-        </form>
+            <h1>登録確認画面</h1>
 
-        <form action ="<?=INSERT?>" method ="POST">
-            <input type= "submit" name ="no" value ="登録画面に戻る">
-        </form>
-        <?php
+            <table>
+                <tr>
+                    <th>名前:</th><td><?=$post_name?></td>
+                </tr>
+                <tr>
+                    <th>生年月日:</th><td><?=$post_birthday?></td>
+                </tr>
+                <tr>
+                    <th>種別:</th><td><?=$post_type?></td>
+                </tr>
+                <tr>
+                    <th>電話番号:</th><td><?=$post_tell?></td>
+                </tr>
+                <tr>
+                    <th>自己紹介:</th><td><?=nl2br($post_comment)?></td>
+                </tr>
+            </table>
+            <p>上記の内容で登録します。よろしいですか？</p>
+
+            <form action ="<?=INSERT_RESULT?>" method ="POST">
+                 <!-- 課題５ hiddenフォーム追加、ランダム値を送る -->
+                <input type ="hidden" name ="pass" value = <?=$random?>>
+                <input type ="submit" name ="yes"   value ='はい'>
+            </form>
+
+            <form action ="<?=INSERT?>" method ="POST">
+                <input type= "submit" name ="no" value ='登録画面に戻る'>
+            </form>
+            <?php
+        }else {
+            ?>
+            <p>その日付は存在しません</p>
+            <p>再度入力を行ってください</p>
+            <form action="<?=INSERT?>" method="POST">
+                <input type="submit" name="no" value='登録画面に戻る'>
+            </form>
+            <?php
+        }
     }else{
         ?>
         <h1>入力項目が不完全です</h1><br>
@@ -74,6 +95,7 @@
         //課題４ 入力されているフォームは値をセッションに保持
         //入力されていなければセッション変数を削除
         session_start();
+
         if(empty($_POST['name'])){
             echo "名前が未入力です<br>";
             unset($_SESSION[("name")]);
@@ -119,7 +141,7 @@
     ?>
         <p>再度入力を行ってください</p>
         <form action="<?=INSERT?>" method="POST">
-            <input type="submit" name="no" value="登録画面に戻る">
+            <input type="submit" name="no" value='登録画面に戻る'>
         </form>
         <?php
     }

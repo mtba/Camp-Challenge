@@ -6,10 +6,10 @@ require_once '../common/defineUtil.php';
 function connect2MySQL(){
     try{
         $pdo = new PDO( DB_TYPE.':host='.DB_HOST.';dbname='.DB_DBNAME.
-            ';charset=utf8',DB_USER,DB_PWD ); //ユーザとパスを変更
+            ';charset=utf8',DB_USER,DB_PWD );
         //課題７ エラーモードをEXCEPTIONに設定
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        //エミュレートをオフ
+        //とりあえずエミュレートはオフ
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 
         return $pdo;
