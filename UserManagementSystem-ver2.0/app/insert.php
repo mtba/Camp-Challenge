@@ -8,13 +8,14 @@
 </head>
 <body>
     <?php session_start();//再入力時用 ?>
+    <h1>新規登録画面</h1>
     <form action="<?php echo INSERT_CONFIRM ?>" method="POST">
-                
+
         名前:
         <input type="text" name="name" value="<?php echo form_value('name'); ?>">
         <br><br>
 
-        生年月日:　
+        生年月日:
         <select name="year">
             <option value="">----</option>
             <?php
@@ -53,11 +54,11 @@
         自己紹介文
         <br>
         <textarea name="comment" rows=10 cols=50 style="resize:none" wrap="hard"><?php echo form_value('comment'); ?></textarea><br><br>
-        
+
         <input type="hidden" name="mode"  value="CONFIRM">
         <input type="submit" name="btnSubmit" value="確認画面へ">
     </form>
-    
+
     <?php echo return_top(); ?>
 </body>
 </html>

@@ -7,50 +7,57 @@
 <meta charset="UTF-8">
       <title>登録確認画面</title>
 </head>
-  <body>
+<body>
     <?php
-    
+
     //入力画面から「確認画面へ」ボタンを押した場合のみ処理を行う
-    //mode_check関数を通すことで、ポストの存在をチェックし、かつ中身が前のページで設定した値と等しいかをチェック
-    if( ! mode_chk("CONFIRM") ){
-        echo 'アクセスルートが不正です。もう一度トップページからやり直してください<br>';
+    //chk_post_mode関数を通すことで、ポストの存在もチェックするよう修正
+    if( ! chk_post_mode("CONFIRM") ){
+
+        echo BAD_ACCESS;
+
     }else{
 
         session_start();
 
         //ポストの存在チェックとセッションに値を格納しつつ、連想配列にポストされた値を格納
         $confirm_values = array(
-                                'name' => bind_p2s('name'),
-                                'year' => bind_p2s('year'),
-                                'month' =>bind_p2s('month'),
-                                'day' =>bind_p2s('day'),
-                                'type' =>bind_p2s('type'),
-                                'tell' =>bind_p2s('tell'),
-                                'comment' =>bind_p2s('comment'));
+                                'name'    => bind_pg2s('name'),
+                                'year'    => bind_pg2s('year'),
+                                'month'   => bind_pg2s('month'),
+                                'day'     => bind_pg2s('day'),
+                                'type'    => bind_pg2s('type'),
+                                'tell'    => bind_pg2s('tell'),
+                                'comment' => bind_pg2s('comment'));
 
         //1つでも未入力項目があったら表示しない
         if(!in_array(null,$confirm_values, true)){
-            ?>
-            <h1>登録確認画面</h1><br>
-            名前:<?php echo $confirm_values['name'];?><br>
-            生年月日:<?php echo $confirm_values['year'].'年'.$confirm_values['month'].'月'.$confirm_values['day'].'日';?><br>
-            種別:<?php echo ex_typenum($confirm_values['type']);?><br>
-            電話番号:<?php echo $confirm_values['tell'];?><br>
-            自己紹介:<?php echo $confirm_values['comment'];?><br><br>
 
-            上記の内容で登録します。よろしいですか？
+            if( ! checkdate($_POST['month'], $_POST['day'], $_POST['year']) ){  //日付存在判定
 
-            <form action="<?php echo INSERT_RESULT ?>" method="POST">
-                <input type="hidden" name="mode" value="RESULT" >
-                <input type="submit" name="yes" value="はい">
-            </form>
-            <?php
+                echo NON_DATE;
+
+            }else {
+                ?>
+                <h1>登録確認画面</h1><br>
+                名前:    <?php echo $confirm_values['name'];?><br>
+                生年月日:<?php echo $confirm_values['year'].'年'.$confirm_values['month'].'月'.$confirm_values['day'].'日';?><br>
+                種別:    <?php echo ex_typenum($confirm_values['type']);?><br>
+                電話番号:<?php echo $confirm_values['tell'];?><br>
+                自己紹介:<?php echo $confirm_values['comment'];?><br><br>
+
+                上記の内容で登録します。よろしいですか？
+
+                <form action="<?php echo INSERT_RESULT ?>" method="POST">
+                    <input type="hidden" name="mode" value="RESULT" >
+                    <input type="submit" name="yes" value="はい">
+                </form>
+                <?php
+            }
         }else {
-            ?>
-            <h1>入力項目が不完全です</h1><br>
-            再度入力を行ってください<br>
-            <h3>不完全な項目</h3>
-            <?php
+
+            echo BAD_INPUT;
+
             //連想配列内の未入力項目を検出して表示
             foreach ($confirm_values as $key => $value){
                 if($value == null){

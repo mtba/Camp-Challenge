@@ -32,7 +32,7 @@ function ex_typenum($type){
  * @return type セッションに入力されていた値
  */
 function form_value($name){
-    if(mode_chk('REINPUT')){
+    if(chk_post_mode('REINPUT')){
         if(isset($_SESSION[$name])){
             return $_SESSION[$name];
         }
@@ -45,29 +45,54 @@ function form_value($name){
  * @param type $name
  * @return type
  */
-function bind_p2s($name){
+function bind_pg2s($name){
     if(!empty($_POST[$name])){
         $_SESSION[$name] = $_POST[$name];
         return $_POST[$name];
+    }elseif (!empty($_GET[$name])) {
+        $_SESSION[$name] = $_GET[$name];
+        return $_GET[$name];
     }else{
         $_SESSION[$name] = null;
         return null;
     }
 }
 
-function mode_chk($value){
+/**
+ * 前の画面からボタンを押して遷移してきたかどうかを判定
+ * 不正アクセス処理用
+ * @param type $value 前ページから送られるhiddenデータ
+ * @return type
+ */
+function chk_post_mode($value){
     if (isset($_POST['mode']) && $_POST['mode']==$value) {
         return TRUE;
     }
     return FALSE;
 }
 
-function check_post_get($name){
+/**
+ * POSTとGETの存在判定
+ * @param type $name キー名
+ * @return type
+ */
+function chk_input($name){
     if(!empty($_GET[$name])){
-        // $_SESSION[$name] = $_POST[$name];
         return $_GET[$name];
+    }elseif (!empty($_POST[$name])) {
+        return $_POST[$name];
     }else{
-        // $_SESSION[$name] = null;
         return null;
     }
+}
+
+/**
+ * 現在時をdatetime型で取得し返す
+ * @param type
+ * @return type datetime型の現在時
+ */
+function now(){
+    $datetime =new DateTime();
+    $date = $datetime->format('Y-m-d H:i:s');
+    return $date;
 }
