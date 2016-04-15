@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>ユーザー情報管理トップ</title>
-    <link href="../common/ums.css" rel="stylesheet" media="all">
 </head>
 <body>
     <h1>ユーザー情報管理トップ画面</h1>
