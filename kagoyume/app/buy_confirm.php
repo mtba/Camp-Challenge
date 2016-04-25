@@ -6,12 +6,12 @@ write_log(BUY_CONFIRM.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_buy_confirm</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
 
@@ -20,40 +20,43 @@ session_start();
             <?php require_once(HEADER_UNDER);?>
         </header>
 
-        <?php
-        if( ! chk_transition("from_cart") ){
-
-            echo BAD_ACCESS;
-
-        }else {
-            $codes_array = explode(" ", $_COOKIE[$_SESSION['user']['userID']]); // クッキー内の商品コード群を分割し、配列に格納
-            ?>
-            <h2>確認</h2>
+        <section class='main'>
             <?php
-            foreach ($codes_array as $key => $value) {
-                $hit = hitBy_itemLookup($value);
-                ?>
-                <p><?php echo $hit->Name;?></p>
-                <p>￥<?php echo $hit->Price;?></p>
+            if( ! chk_transition("from_cart") ){
 
+                echo BAD_ACCESS;
+
+            }else {
+                $codes_array = explode(" ", $_COOKIE[$_SESSION['user']['userID']]); // クッキー内の商品コード群を分割し、配列に格納
+                ?>
+                <h2>確認</h2>
+
+                    <?php
+                    foreach ($codes_array as $key => $value) {
+                        $hit = hitBy_itemLookup($value);
+                        ?>
+                        <div class="Item_buy">
+                            <p><?php echo $hit->Name;?></p>
+                            <p class="price">￥<?php echo number_format( h($hit->Price) );?></p>
+                        </div>
+                        <?php
+                    } ?>
+
+                <p>合計金額：<span class="price">￥<?php echo number_format($_SESSION['numPrice']);?></span></p>
+
+                <form action="<?php echo BUY_COMPLETE;?>" method="post">
+                    <p>
+                        <input type="radio" name="type" value=1 checked >通常
+                        <input type="radio" name="type" value=2 >お急ぎ便
+                    </p>
+
+                    <input type="hidden" name="transition" value='from_confirm'>
+                    <input type="submit" name="btnSubmit" value="上記の内容で購入する">
+                </form>
+                <a href='<?php echo CART?>'>カートへ戻る</a>
                 <?php
             }
-            echo "<p>合計金額：￥".$_SESSION['numPrice']."<p>";
-            ?>
-
-            <form action="<?php echo BUY_COMPLETE;?>" method="post">
-                <p>
-                    <input type="radio" name="type" value=1 checked >通常
-                    <input type="radio" name="type" value=2 >お急ぎ便
-                    <input type="radio" name="type" value=3 >なんか
-                </p>
-
-                <input type="hidden" name="transition" value='from_confirm'>
-                <input type="submit" name="btnSubmit" value="上記の内容で購入する">
-            </form>
-            <a href='<?php echo CART?>'>カートへ戻る</a>
-            <?php
-        }
-         ?>
+             ?>
+         </section>
     </body>
 </html>

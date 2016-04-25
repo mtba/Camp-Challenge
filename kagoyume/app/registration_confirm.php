@@ -7,16 +7,20 @@ write_log(REGISTRATION_CONFIRM.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_registration_confirm</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
-            <h1><a href="<?php echo TOP ;?>">かごゆめ</a></h1>
+            <div class="header_top">
+                <div class="title">
+                    <a href="<?php echo TOP ;?>">かごゆめ</a>
+                </div>
+            </div>
 
             <?php require_once(HEADER_UNDER);?>
         </header>
@@ -40,34 +44,32 @@ session_start();
                 //1つでも未入力項目があったら登録不可
                 if(!in_array(null,$confirm_values, true)){
 
-                    $result = search_profiles('name');  //DB内の全ユーザー名を取得
-                    $match = false; //入力したユーザー名がDBに既にあるかを示す変数
+                    $result = search_profiles($confirm_values['name']);  //DBから入力したユーザ名で検索
 
-                    // 入力したユーザ名がＤＢのものと一致した場合も登録不可
-                    foreach ($result as $value) {
-                        if ( $confirm_values['name']==$value['name'] ) {
-                            $match = true;
-                            break;
+                    if( ! is_array($result) ){
+
+                        echo "<p>データの検索に失敗しました:".$result."</p>";
+
+                    }else{
+                        if ( !empty($result) ) {
+                            echo "<h2>そのユーザー名は既に使われています</h2><p>再度入力を行ってください</p>";
+                        }else {
+                            ?>
+                            <h2>登録確認画面</h2>
+                            <p>ユーザー名:    <?php echo $confirm_values['name'];?></p>
+                            <p>パスワード:    <?php echo $confirm_values['pass'];?></p>
+                            <p>メールアドレス:<?php echo $confirm_values['mail'];?></p>
+                            <p>住所:          <?php echo $confirm_values['address'];?></p>
+
+                            <p>上記の内容で登録します。よろしいですか？</p>
+
+                            <form action="<?php echo REGISTRATION_COMPLETE ?>" method="POST">
+                                <input type='hidden' name='comeFrom' value=<?php echo h($_POST['comeFrom']);?>>
+                                <input type="hidden" name="transition" value="from_confirm" >
+                                <input type="submit" name="yes" value="はい">
+                            </form>
+                            <?php
                         }
-                    }
-                    if ( $match ) {
-                        echo "<h2>そのユーザー名は既に使われています</h2><p>再度入力を行ってください</p>";
-                    }else {
-                        ?>
-                        <h2>登録確認画面</h2>
-                        <p>ユーザー名:    <?php echo $confirm_values['name'];?></p>
-                        <p>パスワード:    <?php echo $confirm_values['pass'];?></p>
-                        <p>メールアドレス:<?php echo $confirm_values['mail'];?></p>
-                        <p>住所:          <?php echo $confirm_values['address'];?></p>
-
-                        <p>上記の内容で登録します。よろしいですか？</p>
-
-                        <form action="<?php echo REGISTRATION_COMPLETE ?>" method="POST">
-                            <input type='hidden' name='comeFrom' value=<?php echo $_POST['comeFrom'];?>>
-                            <input type="hidden" name="transition" value="from_confirm" >
-                            <input type="submit" name="yes" value="はい">
-                        </form>
-                        <?php
                     }
 
                 }else {
@@ -96,7 +98,7 @@ session_start();
                 }
                 ?>
                 <form action="<?php echo REGISTRATION ?>" method="POST">
-                    <input type='hidden' name='comeFrom' value=<?php echo $_POST['comeFrom'];?>>
+                    <input type='hidden' name='comeFrom' value=<?php echo h($_POST['comeFrom']);?>>
                     <input type="hidden" name="transition" value="REINPUT" >
                     <input type="submit" name="no" value="登録画面に戻る">
                 </form>

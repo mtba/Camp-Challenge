@@ -8,12 +8,12 @@ write_log(UPDATE_RESULT.'に遷移');
 session_start();
 
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_update_result</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
@@ -23,11 +23,33 @@ session_start();
 
         <section class='main'>
             <?php
-            if( ! chk_transition("from_update") ){
+            if( ! chk_transition("to_update_result") ){
 
                 echo BAD_ACCESS;
 
             }else {
+                if ( !empty($_POST['name']) && $_POST['name']!=$_SESSION['user']['name']){
+
+                    $result = search_profiles($_POST['name']);  //DBから入力したユーザ名で検索
+
+                    if( ! is_array($result) ){
+
+                        echo "<p>データの検索に失敗しました:".$result."</p>";
+
+                    }else{
+                        if ( !empty($result) ) {
+                            echo "<h2>そのユーザー名は既に使われています</h2><p>再度入力を行ってください</p>";
+                            ?>
+                            <form action="<?php echo UPDATE?>" method="post">
+                                <input type="hidden" name="transition" value='to_update'>
+                                <input type="submit" name="update" value="更新ページへ戻る">
+                            </form>
+                            <?php
+                            exit;
+                        }
+                    }
+                }
+
 
                 $update_values = array();   //更新したい項目と更新後の値を格納する配列
 
@@ -63,7 +85,7 @@ session_start();
 
                         <?php
                     }else{
-                        echo '<p>データの検索に失敗しました。次記のエラーにより処理を中断します:'.$result_update.'</p>';
+                        echo '<p>データの更新に失敗しました。次記のエラーにより処理を中断します:'.$result_update.'</p>';
                     }
                 }
             }

@@ -7,11 +7,12 @@ write_log(ADD.'に遷移');
 session_start();
 ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_add</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
 
@@ -39,7 +40,12 @@ session_start();
             }
 
             $hit = hitBy_itemLookup($_POST["code"]); ?>
-            <h2>「<?php echo h($hit->Name);?>」をカートに追加しました</h2>
+            <p>「<?php echo h($hit->Name);?>」をカートに追加しました</p>
+
+            <!-- ヘッダーのカート内商品数も更新 -->
+            <script type="text/javascript">
+                document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) + 1;
+            </script>
             <?php
         } ?>
     </body>

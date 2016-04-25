@@ -6,12 +6,12 @@ write_log(UPDATE.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_update</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
@@ -20,9 +20,9 @@ session_start();
         </header>
 
         <section class='main'>
-
+            <h2>ユーザー情報更新画面</h2>
             <?php
-            if( ! chk_transition("from_mydata") ){
+            if( ! chk_transition("to_update") ){
 
                 echo BAD_ACCESS;
 
@@ -38,7 +38,7 @@ session_start();
                    <p>住所:
                        <input type="text" name="address" value="<?php echo $_SESSION['user']['address']; ?>"></p>
 
-                   <input type="hidden" name="transition"  value="from_update">
+                   <input type="hidden" name="transition"  value="to_update_result">
                    <input type="submit" name="btnSubmit" value="更新">
                </form>
                <a href='<?php echo MYDATA?>'>ユーザ情報へ戻る</a>

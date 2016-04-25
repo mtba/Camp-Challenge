@@ -7,16 +7,20 @@ write_log(REGISTRATION_COMPLETE.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_complete</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
-            <h1><a href="<?php echo TOP ;?>">かごゆめ</a></h1>
+            <div class="header_top">
+                <div class="title">
+                    <a href="<?php echo TOP ;?>">かごゆめ</a>
+                </div>
+            </div>
 
             <?php require_once(HEADER_UNDER);?>
         </header>
@@ -57,6 +61,7 @@ session_start();
                          <input type="hidden" name="in_or_out" value="ログイン" >
                          <input type="submit" name="backToLogin" value="ログイン画面に戻る">
                      </form>
+                     <a href=<?php echo TOP;?>>トップへ戻る</a>
                     <?php
                 }else {
 

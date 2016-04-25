@@ -32,7 +32,7 @@ function hitBy_itemLookup($code){
 
     $url = ITEM_LOOKUP.
         "?appid=".APP_ID.
-        "&itemcode=$code&responsegroup=large";
+        "&itemcode=$code&responsegroup=large&image_size=300";
 
     $xml = simplexml_load_file($url);
 
@@ -78,8 +78,8 @@ function form_value($name){
  */
 function bind_p2s($name){
     if(!empty($_POST[$name])){
-        $_SESSION[$name] = $_POST[$name];
-        return $_POST[$name];
+        $_SESSION[$name] = h($_POST[$name]);
+        return h($_POST[$name]);
     }else{
         $_SESSION[$name] = null;
         return null;

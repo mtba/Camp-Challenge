@@ -7,12 +7,12 @@ write_log(BUY_COMPLETE.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_buy_complete</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
@@ -50,7 +50,12 @@ session_start();
                     $_SESSION['numPrice'] = null;   //使い終えたセッションを削除
 
                     write_log($_SESSION['user']['name'].'が商品購入');
-
+                    ?>
+                    <!-- カート内の商品数も更新 -->
+                    <script type="text/javascript">
+                        document.getElementById('numGoods').innerHTML = 0;
+                    </script>
+                    <?php
                 }else{
                     echo '<p>データの検索に失敗しました。次記のエラーにより処理を中断します:'.$result_update.'</p>';
                 }

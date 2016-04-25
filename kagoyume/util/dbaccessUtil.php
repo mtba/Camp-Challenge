@@ -84,14 +84,28 @@ function insert_buy($userID, $total, $type){
     return null;
 }
 
-function search_profiles($column){
+function search_profiles($name=null,$pass=null){
     //db接続を確立
     $search_db = connect2MySQL();
 
-    $search_sql = "SELECT $column FROM user_t";
+    $search_sql = "SELECT * FROM user_t";
+
+    if(!empty($name)){
+        $search_sql .= " WHERE name = :name";
+        if(!empty($pass)){
+            $search_sql .= " AND password = :pass";
+        }
+    }
 
     //クエリとして用意
     $seatch_query = $search_db->prepare($search_sql);
+
+    if(!empty($name)){
+        $seatch_query->bindValue(':name',$name);
+    }
+    if(!empty($pass)){
+        $seatch_query->bindValue(':pass',$pass);
+    }
 
     //SQLを実行
     try{
@@ -100,10 +114,9 @@ function search_profiles($column){
         $seatch_db=null;
         return $e->getMessage();
     }
-    //全レコードを連想配列として返却
-    $result = $seatch_query->fetchAll(PDO::FETCH_ASSOC);
-    $seatch_db=null;
-    return $result;
+
+    //該当するレコードを連想配列として返却
+    return $seatch_query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function update_profile($update_data,$userID){

@@ -6,12 +6,12 @@ write_log(MYDATA.'に遷移');
 
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
         <title>kagoyume_mydata</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../css/prototype.css"/> -->
+        <link rel="stylesheet" type="text/css" href=<?php echo CSS_COMMON;?>>
     </head>
     <body>
         <header>
@@ -39,11 +39,11 @@ session_start();
                 <p>登録日時：<?php echo date('Y年n月j日　G時i分s秒', strtotime($user['newDate']));?></p>
 
                 <form action="<?php echo UPDATE?>" method="post">
-                    <input type="hidden" name="transition" value='from_mydata'>
+                    <input type="hidden" name="transition" value='to_update'>
                     <input type="submit" name="update" value="更新">
                 </form>
                 <form action="<?php echo DELETE?>" method="post">
-                    <input type="hidden" name="transition" value='from_mydata'>
+                    <input type="hidden" name="transition" value='to_delete'>
                     <input type="submit" name="update" value="削除">
                 </form>
                 <?php

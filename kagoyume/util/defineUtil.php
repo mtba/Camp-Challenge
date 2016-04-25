@@ -20,6 +20,7 @@ const SCRIPT        = "../util/scriptUtil.php";
 const DBACCESS      = "../util/dbaccessUtil.php";
 const HEADER_TOP   = "../util/header_top.php";
 const HEADER_UNDER = "../util/header_under.php";
+const CSS_COMMON = "../util/common.css";
 
 const DB_TYPE     = 'mysql';            //データベースの種類
 const DB_HOST     = 'localhost';        //ホスト名
