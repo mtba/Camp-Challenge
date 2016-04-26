@@ -37,13 +37,17 @@ session_start();
 
                     // 削除ボタンが押された商品のコードを配列から削除し、再びクッキーに格納する
                     if (isset($_POST['delete']) && $_POST['delete']=='削除') {
+
+                        $num_delete = substr($codes_array[$_POST['item_num']], -1);//削除する商品の個数を保存しておく
+
                         array_splice($codes_array, $_POST['item_num'], 1);
                         $codes_string = implode(" ", $codes_array);
                         setcookie($_SESSION['user']['userID'],$codes_string);
                         ?>
                         <!-- カート内の商品数も更新 -->
                         <script type="text/javascript">
-                            document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) - 1;
+                            var num_delete = <?php echo json_safe_encode($num_delete); ?>;
+                            document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) -  num_delete;
                         </script>
                         <?php
                     }
@@ -59,17 +63,19 @@ session_start();
                             <?php
                             // 商品情報(リンク付き)と削除ボタンを表示
                             foreach ($codes_array as $key => $value) {
-                                $hit = hitBy_itemLookup($value);
+                                $code_and_num = explode("*",$value);
+                                $hit = hitBy_itemLookup($code_and_num[0]);
                                 ?>
                                 <div class="Item">
-                                    <a href="<?php echo ITEM.'?code='.$value; ?>">
+                                    <a href="<?php echo ITEM.'?code='.$code_and_num[0];?>">
                                         <div class="img"><img src="<?php echo $hit->Image->Medium;?>" ></div>
                                     </a>
                                     <div class="data">
-                                        <a href="<?php echo ITEM.'?code='.$value; ?>">
+                                        <a href="<?php echo ITEM.'?code='.$code_and_num[0];?>">
                                             <?php echo h($hit->Name);?>
                                         </a>
                                         <p class="price">￥<?php echo number_format( h($hit->Price) );?></p>
+                                        <p>個数　<?php echo $code_and_num[1];?></p>
                                     </div>
                                     <div class="delete">
                                         <form action="<?php echo CART?>" method="post">
@@ -79,7 +85,7 @@ session_start();
                                     </div>
                                 </div>
                                 <?php
-                                $numPrice += $hit->Price;   //商品の値段を合計金額にプラス
+                                $numPrice += $hit->Price * $code_and_num[1];   //商品の値段を合計金額にプラス
                             } ?>
                         </div>
 

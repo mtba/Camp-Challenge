@@ -17,11 +17,14 @@
         </div>
         <?php
     }else {
+        // カート内の個数を変数に保存
+        $numGoods = 0;
+        if ( !empty($_COOKIE[$_SESSION['user']['userID']]) ){
 
-        if ( empty($_COOKIE[$_SESSION['user']['userID']]) ){
-            $numGoods = 0;
-        }else {
-            $numGoods = substr_count($_COOKIE[$_SESSION['user']['userID']], ' ') + 1;
+            $codes_array = explode(" ", $_COOKIE[$_SESSION['user']['userID']]);
+            foreach ($codes_array as $value) {
+                $numGoods += substr($value, -1);
+            }
 
         } ?>
 

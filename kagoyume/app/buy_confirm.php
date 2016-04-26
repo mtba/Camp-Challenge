@@ -33,11 +33,13 @@ session_start();
 
                     <?php
                     foreach ($codes_array as $key => $value) {
-                        $hit = hitBy_itemLookup($value);
+                        $code_and_num = explode("*",$value);
+                        $hit = hitBy_itemLookup($code_and_num[0]);
                         ?>
                         <div class="Item_buy">
                             <p><?php echo $hit->Name;?></p>
                             <p class="price">￥<?php echo number_format( h($hit->Price) );?></p>
+                            <p>個数　<?php echo $code_and_num[1];?></p>
                         </div>
                         <?php
                     } ?>
