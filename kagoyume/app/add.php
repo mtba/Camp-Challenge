@@ -31,24 +31,24 @@ session_start();
             // キー名にはユーザーIDを指定(別ユーザーでログインしたときクッキーを保持させないため)
             // ２回目以降は空欄で区切って、あくまで文字列として保管
             if ( !isset($_COOKIE[$_SESSION['user']['userID']]) ) {
-                setcookie($_SESSION['user']['userID'],$_POST["code"].'*1');
+                setcookie($_SESSION['user']['userID'],$_POST["code"].'*'.$_POST['num_item']);
             }else {
 
-                if (strpos($_COOKIE[$_SESSION['user']['userID']],$_POST["code"])!==false) {
+                if ( strpos($_COOKIE[$_SESSION['user']['userID']],$_POST["code"]) !== false ) {
 
                     $codes_array = explode(" ", $_COOKIE[$_SESSION['user']['userID']]);
 
                     foreach ($codes_array as $key => $value) {
                         $code_and_num = explode("*",$value);
                         if ($code_and_num[0]==$_POST["code"]) {
-                            $code_and_num[1]++;
+                            $code_and_num[1]+=$_POST['num_item'];
                         }
                         $codes_array[$key] = implode('*', $code_and_num);
                     }
                     $codes_string = implode(" ", $codes_array);
 
                 }else {
-                    $codes_string = $_COOKIE[$_SESSION['user']['userID']].' '.$_POST["code"].'*1';
+                    $codes_string = $_COOKIE[$_SESSION['user']['userID']].' '.$_POST["code"].'*'.$_POST['num_item'];
                 }
 
                 setcookie($_SESSION['user']['userID'],$codes_string);
@@ -59,7 +59,8 @@ session_start();
 
             <!-- ヘッダーのカート内商品数も更新 -->
             <script type="text/javascript">
-                document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) + 1;
+                var num_item = <?php echo json_safe_encode($_POST['num_item']); ?>;
+                document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) + parseInt(num_item);
             </script>
             <?php
         } ?>

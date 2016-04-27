@@ -48,6 +48,15 @@ $code = !empty($_GET["code"]) ? $_GET["code"] : ""; //商品コード
                         if ( !empty($_SESSION['user']) ){ ?>
                             <div class="add">
                                 <form action="<?php echo ADD;?>" method="POST">
+                                    個数
+                                    <select name='num_item'>
+                                        <?php
+                                        for ($i=1; $i <= 9; $i++) {
+                                            echo "<option value='$i'>$i</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                    <br>
                                     <input type='hidden' name='code' value=<?php echo $code;?>>
                                     <input type='hidden' name='transition' value='from_item'>
                                     <input type='submit' value='カートに追加する'>
