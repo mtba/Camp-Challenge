@@ -32,12 +32,12 @@ session_start();
 
                 ?>
                 <h2>ユーザー情報削除の確認</h2>
-                <p>ユーザー名：<?php echo $user['name'];?></p>
-                <p>パスワード：<?php echo $user['password'];?></p>
-                <p>メールアドレス：<?php echo $user['mail'];?></p>
-                <p>住所：<?php echo $user['address'];?></p>
-                <p>総購入金額：￥<?php echo $user['total'];?></p>
-                <p>登録日時：<?php echo date('Y年n月j日　G時i分s秒', strtotime($user['newDate']));?></p>
+                <p>ユーザー名：<?php echo h($user['name']);?></p>
+                <p>パスワード：<?php echo h($user['password']);?></p>
+                <p>メールアドレス：<?php echo h($user['mail']);?></p>
+                <p>住所：<?php echo h($user['address']);?></p>
+                <p>総購入金額：￥<?php echo h($user['total']);?></p>
+                <p>登録日時：<?php echo h( date('Y年n月j日　G時i分s秒', strtotime($user['newDate'])) );?></p>
                 <h3>このユーザーをマジで削除しますか？</h3>
                 <form action="<?php echo DELETE_RESULT ;?>" method="POST">
                     <input type='hidden' name='transition' value='to_delete_result'>

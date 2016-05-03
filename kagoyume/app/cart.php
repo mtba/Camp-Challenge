@@ -38,15 +38,13 @@ session_start();
                     // 削除ボタンが押された商品のコードを配列から削除し、再びクッキーに格納する
                     if (isset($_POST['delete']) && $_POST['delete']=='削除') {
 
-                        $num_delete = substr($codes_array[$_POST['item_num']], -1);//削除する商品の個数を保存しておく
-
                         array_splice($codes_array, $_POST['item_num'], 1);
                         $codes_string = implode(" ", $codes_array);
                         setcookie($_SESSION['user']['userID'],$codes_string);
                         ?>
                         <!-- カート内の商品数も更新 -->
                         <script type="text/javascript">
-                            var num_delete = <?php echo json_safe_encode($num_delete); ?>;
+                            var num_delete = <?php echo json_safe_encode($_POST['delete_num']); ?>;
                             document.getElementById('numGoods').innerHTML =parseInt( document.getElementById('numGoods').innerHTML ) -  num_delete;
                         </script>
                         <?php
@@ -80,6 +78,7 @@ session_start();
                                     <div class="delete">
                                         <form action="<?php echo CART?>" method="post">
                                             <input type="hidden" name="item_num" value=<?php echo h($key);?>>
+                                            <input type="hidden" name="delete_num" value=<?php echo $code_and_num[1];?>>
                                             <input type="submit" name="delete" value="削除">
                                         </form>
                                     </div>

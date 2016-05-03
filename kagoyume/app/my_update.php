@@ -30,13 +30,13 @@ session_start();
                 ?>
                <form action="<?php echo UPDATE_RESULT ?>" method="POST">
                    <p>ユーザー名:
-                       <input type="text" name="name" value="<?php echo $_SESSION['user']['name']; ?>"></p>
+                       <input type="text" name="name" value="<?php echo h($_SESSION['user']['name']); ?>"></p>
                    <p>パスワード:
-                       <input type="text" name="password" value="<?php echo $_SESSION['user']['password']; ?>"></p>
+                       <input type="text" name="password" value="<?php echo h($_SESSION['user']['password']); ?>"></p>
                    <p>メールアドレス:
-                       <input type="email" name="mail" value="<?php echo $_SESSION['user']['mail']; ?>"></p>
+                       <input type="email" name="mail" value="<?php echo h($_SESSION['user']['mail']); ?>"></p>
                    <p>住所:
-                       <input type="text" name="address" value="<?php echo $_SESSION['user']['address']; ?>"></p>
+                       <input type="text" name="address" value="<?php echo h($_SESSION['user']['address']); ?>"></p>
 
                    <input type="hidden" name="transition"  value="to_update_result">
                    <input type="submit" name="btnSubmit" value="更新">

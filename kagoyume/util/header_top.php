@@ -1,4 +1,3 @@
-
 <div class="header_top">
     <div class="title">
         <a href="<?php echo TOP ;?>">かごゆめ</a>
@@ -23,7 +22,8 @@
 
             $codes_array = explode(" ", $_COOKIE[$_SESSION['user']['userID']]);
             foreach ($codes_array as $value) {
-                $numGoods += substr($value, -1);
+                $code_and_num = explode("*",$value);
+                $numGoods += $code_and_num[1];
             }
 
         } ?>
